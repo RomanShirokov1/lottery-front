@@ -9,6 +9,7 @@ export const AppProviders = ({ children }: PropsWithChildren) => {
         token: {
           colorPrimary: '#f59e0b',
           borderRadius: 10,
+          fontFamily: "'EuclidCircularA', 'Segoe UI', sans-serif",
         },
       }}
     >

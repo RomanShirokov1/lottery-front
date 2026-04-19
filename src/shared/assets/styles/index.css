@@ -1,8 +1,8 @@
+@import './fonts.css';
+@import './base.css';
+
 :root {
-  font-family:
-    'Manrope',
-    'Segoe UI',
-    sans-serif;
+  font-family: 'EuclidCircularA', 'Segoe UI', sans-serif;
   line-height: 1.4;
   font-weight: 400;
   color: #0f172a;
@@ -14,19 +14,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  min-height: 100vh;
-  margin: 0;
 }
 
 .page-center {

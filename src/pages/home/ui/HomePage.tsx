@@ -1,27 +1,26 @@
-import { Button, Card, Flex, Space, Typography } from 'antd'
+﻿import { Button, Card, Flex, Space, Typography } from 'antd'
 import { toast } from 'react-toastify'
-import { useAppStore } from '@/shared/store/app.store'
-import { removeAuthToken, setAuthToken } from '@/shared/lib/cookies/auth-token'
+import { useAuthStore } from '@/entities/auth'
 import { api } from '@/shared/api/base'
+import { useAppStore } from '@/shared/store/app.store'
 
 export const HomePage = () => {
+  const logout = useAuthStore((state) => state.logout)
   const { ticketsCount, incrementTickets, resetTickets } = useAppStore()
 
-  const handleFakeLogin = async () => {
-    setAuthToken('hackathon-temp-token')
-    toast.success('Токен сохранен в cookie')
-
+  const handleHealthCheck = async () => {
     try {
       await api.get('/health')
+      toast.success('Backend health check done')
     } catch {
-      toast.info('Бэкенд пока не подключен, это нормально для старта')
+      toast.info('Backend is not connected yet')
     }
   }
 
   const handleLogout = () => {
-    removeAuthToken()
+    logout()
     resetTickets()
-    toast.warning('Cookie очищены')
+    toast.warning('Session cleared')
   }
 
   return (
@@ -29,21 +28,20 @@ export const HomePage = () => {
       <Card
         title="Lottery Front"
         style={{ width: 'min(560px, 100%)' }}
-        extra={<Typography.Text type="secondary">FSD starter</Typography.Text>}
+        extra={<Typography.Text type="secondary">Protected Area</Typography.Text>}
       >
         <Space direction="vertical" size={16} style={{ width: '100%' }}>
           <Typography.Paragraph style={{ marginBottom: 0 }}>
-            Базовый каркас готов: роутинг, `antd`, `axios`, `zustand`, cookies и
-            toast-уведомления.
+            Protected app area. Auth page is available at `/auth`.
           </Typography.Paragraph>
 
           <Flex gap={8} wrap="wrap">
             <Button type="primary" onClick={incrementTickets}>
-              +1 билет ({ticketsCount})
+              +1 ticket ({ticketsCount})
             </Button>
-            <Button onClick={handleFakeLogin}>Проверка API/Cookie</Button>
+            <Button onClick={handleHealthCheck}>Check API</Button>
             <Button danger onClick={handleLogout}>
-              Очистить состояние
+              Logout
             </Button>
           </Flex>
         </Space>

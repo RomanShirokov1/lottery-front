@@ -1,0 +1,29 @@
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--color-text, #152218);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--color-border, #d3dfd1);
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 15px;
+  color: var(--color-text, #152218);
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-primary, #2f8f4e);
+}
+
+.error {
+  font-size: 12px;
+  color: var(--color-danger, #c23a3a);
+}

@@ -1,0 +1,34 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'EuclidCircularA', 'Segoe UI', sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+}
+
+input,
+textarea,
+button {
+  outline: none;
+}
