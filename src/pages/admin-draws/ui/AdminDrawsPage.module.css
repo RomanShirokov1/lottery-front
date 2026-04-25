@@ -1,0 +1,71 @@
+.formRow {
+  display: flex;
+  gap: 16px;
+}
+
+.formCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.actionFinish {
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+  background: rgba(37, 99, 235, 0.12) !important;
+  border-radius: 8px !important;
+  color: #1d4ed8 !important;
+  padding-inline: 10px !important;
+}
+
+.actionFinish:hover {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #1e40af !important;
+}
+
+.actionStart {
+  border: 1px solid rgba(22, 163, 74, 0.3) !important;
+  background: rgba(22, 163, 74, 0.12) !important;
+  border-radius: 8px !important;
+  color: #15803d !important;
+  padding-inline: 10px !important;
+}
+
+.actionStart:hover {
+  background: rgba(22, 163, 74, 0.2) !important;
+  color: #166534 !important;
+}
+
+.actionCancel {
+  border: 1px solid rgba(220, 38, 38, 0.28) !important;
+  background: rgba(220, 38, 38, 0.12) !important;
+  border-radius: 8px !important;
+  color: #b91c1c !important;
+  padding-inline: 10px !important;
+}
+
+.actionCancel:hover {
+  background: rgba(220, 38, 38, 0.2) !important;
+  color: #991b1b !important;
+}
+
+.actionDetails {
+  width: fit-content;
+  border: 1px solid rgba(37, 99, 235, 0.28) !important;
+  background: rgba(37, 99, 235, 0.1) !important;
+  border-radius: 8px !important;
+  color: #1d4ed8 !important;
+  font-weight: 500 !important;
+  padding-inline: 10px !important;
+  margin-top: 8px;
+}
+
+.actionDetails:hover {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #1e40af !important;
+}
+
+@media (max-width: 900px) {
+  .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+}

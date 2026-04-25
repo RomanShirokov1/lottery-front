@@ -1,21 +1,27 @@
-import { Spin } from 'antd'
+﻿import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore, verifyAuth } from '@/entities/auth'
 import { ROUTES } from '@/shared/config/routes'
+import { getAuthToken, type UserRole } from '@/shared/lib/cookies/auth-token'
+import { ProtectedHeader } from './ui/ProtectedHeader'
+import styles from './ProtectedLayout.module.css'
 
 export const ProtectedLayout = () => {
   const isAuthorized = useAuthStore((state) => state.isAuthorized)
+  const role = useAuthStore((state) => state.role)
+  const login = useAuthStore((state) => state.login)
   const setRole = useAuthStore((state) => state.setRole)
   const logout = useAuthStore((state) => state.logout)
   const [checking, setChecking] = useState(true)
-  const strictVerify = import.meta.env.VITE_AUTH_VERIFY_STRICT === 'true'
 
   useEffect(() => {
     let active = true
 
     const bootstrap = async () => {
-      if (!isAuthorized) {
+      const token = getAuthToken()
+
+      if (!token) {
         if (active) {
           setChecking(false)
         }
@@ -24,15 +30,17 @@ export const ProtectedLayout = () => {
 
       try {
         const data = await verifyAuth()
-        const role = data?.role
+        const normalizedRole = typeof data?.role === 'string' ? data.role.toUpperCase() : ''
 
-        if (role === 'user' || role === 'admin') {
-          setRole(role)
-        }
-      } catch {
-        if (strictVerify) {
+        if (normalizedRole === 'USER' || normalizedRole === 'ADMIN') {
+          const resolvedRole = normalizedRole as UserRole
+          login(token, resolvedRole)
+          setRole(resolvedRole)
+        } else {
           logout()
         }
+      } catch {
+        logout()
       } finally {
         if (active) {
           setChecking(false)
@@ -45,7 +53,7 @@ export const ProtectedLayout = () => {
     return () => {
       active = false
     }
-  }, [isAuthorized, logout, setRole, strictVerify])
+  }, [login, logout, setRole])
 
   if (checking) {
     return (
@@ -59,5 +67,16 @@ export const ProtectedLayout = () => {
     return <Navigate to={ROUTES.auth} replace />
   }
 
-  return <Outlet />
+  if (role !== 'USER' && role !== 'ADMIN') {
+    return <Navigate to={ROUTES.auth} replace />
+  }
+
+  return (
+    <div className={styles.page}>
+      <ProtectedHeader role={role} />
+      <main className={styles.content}>
+        <Outlet />
+      </main>
+    </div>
+  )
 }

@@ -2,18 +2,31 @@
 @import './base.css';
 
 :root {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-secondary-bg: #ffffff;
+  --color-secondary-bg-hover: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #dbe2ea;
+
   font-family: 'EuclidCircularA', 'Segoe UI', sans-serif;
   line-height: 1.4;
   font-weight: 400;
   color: #0f172a;
-  background:
-    radial-gradient(circle at 100% 0%, #fde68a 0%, transparent 45%),
-    radial-gradient(circle at 0% 100%, #bae6fd 0%, transparent 40%),
-    #f8fafc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background:
+    radial-gradient(circle at 100% 0%, #fde68a 0%, transparent 45%),
+    radial-gradient(circle at 0% 100%, #bae6fd 0%, transparent 40%),
+    #f8fafc;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed, fixed, fixed;
 }
 
 .page-center {

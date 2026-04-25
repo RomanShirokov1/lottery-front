@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom'
+﻿import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '@/entities/auth'
 import { ROUTES } from '@/shared/config/routes'
 
@@ -9,7 +9,7 @@ export const AuthLayout = () => {
   if (isAuthorized) {
     return (
       <Navigate
-        to={role === 'admin' ? ROUTES.adminRoot : ROUTES.userRoot}
+        to={role === 'ADMIN' ? ROUTES.adminRoot : ROUTES.userRoot}
         replace
       />
     )

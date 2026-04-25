@@ -1,8 +1,12 @@
-import { type FormEvent, useState } from 'react';
+﻿import { type FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { getAuthErrorMessage, registerByEmail, useAuthStore } from '@/entities/auth';
+import { removeAuthRole, removeAuthToken } from '@/shared/lib/cookies/auth-token';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { PasswordInput } from '@/shared/components/password-input';
+import { ROUTES } from '@/shared/config/routes';
 import styles from '../AuthPage.module.css';
 
 type RegisterFormProps = {
@@ -10,14 +14,19 @@ type RegisterFormProps = {
 };
 
 export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
-  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!username || !password || !repeatPassword) {
+    const normalizedEmail = email.trim();
+
+    if (!normalizedEmail || !password || !repeatPassword) {
       toast.error('Пожалуйста, заполните все поля');
       return;
     }
@@ -27,20 +36,32 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
       return;
     }
 
-    toast.success('Аккаунт успешно создан');
-    onSwitchToLogin();
+    try {
+      setLoading(true);
+      const authData = await registerByEmail({ email: normalizedEmail, password });
+      login(authData.token, 'USER');
+      toast.success('Аккаунт успешно создан');
+      navigate(ROUTES.userRoot);
+    } catch (error) {
+      removeAuthToken();
+      removeAuthRole();
+      toast.error(getAuthErrorMessage(error, 'Не удалось создать аккаунт'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input
-          id="register-username"
-          label="Логин"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          placeholder="Введите логин"
-          autoComplete="username"
+          id="register-email"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="Введите email"
+          autoComplete="email"
         />
         <PasswordInput
           id="register-password"
@@ -58,8 +79,8 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
           placeholder="Подтвердите пароль"
           autoComplete="new-password"
         />
-        <Button type="submit" fullWidth>
-          Создать аккаунт
+        <Button type="submit" fullWidth disabled={loading}>
+          {loading ? 'Создание...' : 'Создать аккаунт'}
         </Button>
       </form>
 

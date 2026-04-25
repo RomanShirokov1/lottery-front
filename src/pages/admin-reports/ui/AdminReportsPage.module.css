@@ -1,0 +1,69 @@
+.formRow {
+  display: flex;
+  gap: 16px;
+}
+
+.formCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  border-radius: 12px;
+}
+
+.chartsRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.chartCard {
+  border-radius: 12px;
+}
+
+.chartWrap {
+  width: 100%;
+  min-height: 260px;
+}
+
+.reportActions {
+  padding-bottom: 18px;
+}
+
+.downloadJsonBtn,
+.downloadCsvBtn {
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+  background: rgba(37, 99, 235, 0.14) !important;
+  color: #1d4ed8 !important;
+  font-weight: 600 !important;
+}
+
+.downloadJsonBtn:hover,
+.downloadCsvBtn:hover {
+  background: rgba(37, 99, 235, 0.22) !important;
+  color: #1e40af !important;
+}
+
+@media (max-width: 1000px) {
+  .statsRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+}

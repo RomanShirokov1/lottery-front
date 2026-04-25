@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { classNames } from '@/shared/lib/class-names/classNames';
 import { LoginForm, RegisterForm } from './components';
 import styles from './AuthPage.module.css';
 

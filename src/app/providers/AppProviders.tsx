@@ -7,7 +7,7 @@ export const AppProviders = ({ children }: PropsWithChildren) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#f59e0b',
+          colorPrimary: '#2563eb',
           borderRadius: 10,
           fontFamily: "'EuclidCircularA', 'Segoe UI', sans-serif",
         },

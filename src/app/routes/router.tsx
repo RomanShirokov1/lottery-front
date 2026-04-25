@@ -1,13 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AdminGuard } from '@/app/model/guards/admin-guard/AdminGuard'
 import { UserGuard } from '@/app/model/guards/user-guard/UserGuard'
 import { AuthLayout } from '@/app/model/layouts/auth-layout/AuthLayout'
 import { ProtectedLayout } from '@/app/model/layouts/protected-layout/ProtectedLayout'
 import { RoleRedirect } from '@/app/model/redirects/role-redirect/RoleRedirect'
-import { AdminDashboardPage } from '@/pages/admin-dashboard'
+import { AdminDrawsPage } from '@/pages/admin-draws'
+import { AdminLotteryTypesPage } from '@/pages/admin-lottery-types'
+import { AdminReportsPage } from '@/pages/admin-reports'
 import { AuthPage } from '@/pages/auth'
 import { NotFoundPage } from '@/pages/not-found'
-import { UserDashboardPage } from '@/pages/user-dashboard'
+import { UserDrawsPage } from '@/pages/user-draws'
+import { UserReportsPage } from '@/pages/user-reports'
+import { UserTicketsPage } from '@/pages/user-tickets'
 import { ROUTES } from '@/shared/config/routes'
 
 export const router = createBrowserRouter([
@@ -23,7 +27,19 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.userRoot,
-            element: <UserDashboardPage />,
+            element: <Navigate to={ROUTES.userDraws} replace />,
+          },
+          {
+            path: ROUTES.userDraws,
+            element: <UserDrawsPage />,
+          },
+          {
+            path: ROUTES.userTickets,
+            element: <UserTicketsPage />,
+          },
+          {
+            path: ROUTES.userReports,
+            element: <UserReportsPage />,
           },
         ],
       },
@@ -32,7 +48,19 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.adminRoot,
-            element: <AdminDashboardPage />,
+            element: <Navigate to={ROUTES.adminDraws} replace />,
+          },
+          {
+            path: ROUTES.adminDraws,
+            element: <AdminDrawsPage />,
+          },
+          {
+            path: ROUTES.adminLotteryTypes,
+            element: <AdminLotteryTypesPage />,
+          },
+          {
+            path: ROUTES.adminReports,
+            element: <AdminReportsPage />,
           },
         ],
       },

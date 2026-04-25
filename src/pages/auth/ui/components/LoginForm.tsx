@@ -1,7 +1,8 @@
-import { type FormEvent, useState } from 'react';
+﻿import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAuthStore } from '@/entities/auth';
+import { getAuthErrorMessage, loginByEmail, useAuthStore } from '@/entities/auth';
+import { removeAuthRole, removeAuthToken } from '@/shared/lib/cookies/auth-token';
 import { Button } from '@/shared/components/button';
 import { Input } from '@/shared/components/input';
 import { PasswordInput } from '@/shared/components/password-input';
@@ -15,33 +16,46 @@ type LoginFormProps = {
 export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!username || !password) {
+    const normalizedEmail = email.trim();
+
+    if (!normalizedEmail || !password) {
       toast.error('Пожалуйста, заполните все поля');
       return;
     }
 
-    const role = username.trim().toLowerCase() === 'admin' ? 'admin' : 'user';
-    login(`demo-token:${username}`, role);
-    toast.success('Успешный вход');
-    navigate(role === 'admin' ? ROUTES.adminRoot : ROUTES.userRoot);
+    try {
+      setLoading(true);
+      const authData = await loginByEmail({ email: normalizedEmail, password });
+      login(authData.token, 'USER');
+      toast.success('Успешный вход');
+      navigate(ROUTES.userRoot);
+    } catch (error) {
+      removeAuthToken();
+      removeAuthRole();
+      toast.error(getAuthErrorMessage(error, 'Не удалось выполнить вход'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input
-          id="login-username"
-          label="Логин"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          placeholder="Введите логин"
-          autoComplete="username"
+          id="login-email"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="Введите email"
+          autoComplete="email"
         />
         <PasswordInput
           id="login-password"
@@ -50,8 +64,8 @@ export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Введите пароль"
         />
-        <Button type="submit" fullWidth>
-          Войти
+        <Button type="submit" fullWidth disabled={loading}>
+          {loading ? 'Вход...' : 'Войти'}
         </Button>
       </form>
 

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react'
+﻿import { useLayoutEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/entities/auth'
 import { ROUTES } from '@/shared/config/routes'
@@ -16,7 +16,7 @@ export const AdminGuard = () => {
       return
     }
 
-    if (role !== 'admin') {
+    if (role !== 'ADMIN') {
       setAllowed(false)
       navigate(ROUTES.userRoot, { replace: true })
       return
