@@ -1,4 +1,4 @@
-﻿import { Button, Card, Form, InputNumber, Space, Statistic, Table, Tag, Typography } from 'antd';
+﻿import { Button, Card, Form, Select, Space, Statistic, Table, Tag, Typography } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -14,8 +14,10 @@ import {
 } from 'recharts';
 import { toast } from 'react-toastify';
 import {
+  getAdminDraws,
   getAdminDrawReportCsv,
   getAdminDrawReportJson,
+  type AdminDraw,
   getDrawApiErrorMessage,
   type AdminDrawReport,
   type TicketStatus,
@@ -68,14 +70,29 @@ const STATUS_CHART_COLORS: Record<TicketStatus, string> = {
 export const AdminReportsPage = () => {
   const [form] = Form.useForm<ReportFormValues>();
   const [searchParams] = useSearchParams();
+  const [drawsLoading, setDrawsLoading] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
   const [jsonLoading, setJsonLoading] = useState(false);
   const [csvLoading, setCsvLoading] = useState(false);
   const [report, setReport] = useState<AdminDrawReport | null>(null);
+  const [draws, setDraws] = useState<AdminDraw[]>([]);
 
   const getDrawId = async () => {
     const values = await form.validateFields(['drawId']);
     return values.drawId;
+  };
+
+  const handleLoadDraws = async () => {
+    setDrawsLoading(true);
+
+    try {
+      const response = await getAdminDraws();
+      setDraws(response);
+    } catch (error) {
+      toast.error(getDrawApiErrorMessage(error, 'Не удалось загрузить список тиражей'));
+    } finally {
+      setDrawsLoading(false);
+    }
   };
 
   const handleGetReport = async () => {
@@ -153,6 +170,10 @@ export const AdminReportsPage = () => {
   }, [statusStats]);
 
   useEffect(() => {
+    void handleLoadDraws();
+  }, []);
+
+  useEffect(() => {
     const queryDrawId = Number(searchParams.get('drawId'));
     if (!Number.isFinite(queryDrawId) || queryDrawId <= 0) {
       return;
@@ -170,10 +191,25 @@ export const AdminReportsPage = () => {
           <div className={styles.formRow}>
             <Form.Item
               className={styles.formCol}
-              label="ID тиража"
+              label="Тираж"
               name="drawId"
               rules={[{ required: true, message: 'Укажите ID тиража' }]}>
-              <InputNumber size="large" min={1} style={{ width: '100%' }} />
+              <Select
+                size="large"
+                showSearch
+                loading={drawsLoading}
+                placeholder="Выберите тираж"
+                optionFilterProp="label"
+                filterOption={(input, option) =>
+                  String(option?.label ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={draws.map((draw) => ({
+                  value: draw.id,
+                  label: `${draw.name} (ID: ${draw.id})`,
+                }))}
+              />
             </Form.Item>
           </div>
 

@@ -19,8 +19,6 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: proxyTarget,
           changeOrigin: true,
-          auth: env.DEV_PROXY_BASIC_AUTH || undefined,
-          rewrite: (path) => path.replace(/^\/api/, ''),
         },
       },
     },

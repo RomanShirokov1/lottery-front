@@ -74,6 +74,13 @@ export const getAdminDrawById = async (drawId: number) => {
   return response.data
 }
 
+export const getAdminDrawByName = async (name: string) => {
+  const response = await api.get<AdminDraw>('/draws/where', {
+    params: { name },
+  })
+  return response.data
+}
+
 export const createAdminDraw = async (payload: CreateDrawPayload) => {
   const response = await api.post<AdminDraw>('/draws', payload)
   return response.data

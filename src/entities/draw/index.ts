@@ -1,6 +1,7 @@
 export {
   cancelAdminDraw,
   createAdminDraw,
+  getAdminDrawByName,
   createLotteryType,
   finishAdminDraw,
   getAdminDrawById,
