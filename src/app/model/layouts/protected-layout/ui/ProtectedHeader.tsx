@@ -14,7 +14,6 @@ const NAV_ITEMS: Record<UserRole, NavItem[]> = {
   USER: [
     { label: 'Тиражи', to: ROUTES.userDraws },
     { label: 'Билеты', to: ROUTES.userTickets },
-    { label: 'Отчеты', to: ROUTES.userReports },
   ],
   ADMIN: [
     { label: 'Тиражи', to: ROUTES.adminDraws },

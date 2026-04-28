@@ -4,7 +4,6 @@ export const ROUTES = {
   userRoot: '/user',
   userDraws: '/user/draws',
   userTickets: '/user/tickets',
-  userReports: '/user/reports',
   adminRoot: '/admin',
   adminDraws: '/admin/draws',
   adminLotteryTypes: '/admin/lottery-types',

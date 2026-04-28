@@ -10,7 +10,6 @@ import { AdminReportsPage } from '@/pages/admin-reports'
 import { AuthPage } from '@/pages/auth'
 import { NotFoundPage } from '@/pages/not-found'
 import { UserDrawsPage } from '@/pages/user-draws'
-import { UserReportsPage } from '@/pages/user-reports'
 import { UserTicketsPage } from '@/pages/user-tickets'
 import { ROUTES } from '@/shared/config/routes'
 
@@ -36,10 +35,6 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.userTickets,
             element: <UserTicketsPage />,
-          },
-          {
-            path: ROUTES.userReports,
-            element: <UserReportsPage />,
           },
         ],
       },

@@ -60,6 +60,26 @@ export type AdminDrawReport = {
   tickets: AdminTicket[]
 }
 
+export type UserTicket = {
+  id: number
+  drawId: number
+  userId: number
+  numbers: string
+  bonus: number | null
+  status: TicketStatus
+  createdAt: string
+}
+
+export type UserTicketListResponse = {
+  tickets: UserTicket[]
+  total: number
+}
+
+export type UserTicketResultResponse = {
+  status: TicketStatus
+  winningCombination: string | null
+}
+
 type ApiErrorResponse = {
   message?: string
 }
@@ -102,6 +122,23 @@ export const cancelAdminDraw = async (drawId: number) => {
 
 export const getLotteryTypes = async () => {
   const response = await api.get<LotteryType[]>('/lottery-types')
+  return response.data
+}
+
+export const buyTicketForDraw = async (drawId: number) => {
+  const response = await api.post<UserTicket>(`/draws/${drawId}/tickets`, {})
+  return response.data
+}
+
+export const getUserTickets = async (limit: number, offset: number) => {
+  const response = await api.get<UserTicketListResponse>('/tickets', {
+    params: { limit, offset },
+  })
+  return response.data
+}
+
+export const getUserTicketResult = async (ticketId: number) => {
+  const response = await api.get<UserTicketResultResponse>(`/tickets/${ticketId}/result`)
   return response.data
 }
 
